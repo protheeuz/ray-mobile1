@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:object_detection/realtime/bounding_box.dart';
-import 'package:object_detection/realtime/camera.dart';
+import 'package:rayproject/realtime/bounding_box.dart';
+import 'package:rayproject/realtime/camera.dart';
 import 'dart:math' as math;
 import 'package:tflite/tflite.dart';
 
@@ -16,17 +16,15 @@ class _LiveFeedState extends State<LiveFeed> {
   List<dynamic> _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;
-  initCameras() async {
-
-  }
+  initCameras() async {}
   loadTfModel() async {
     await Tflite.loadModel(
-      model: "assets/models/ssd_mobilenet.tflite",
+      model: "assets/models/yolo.tflite",
       labels: "assets/models/labels.txt",
     );
   }
   /* 
-  The set recognitions function assigns the values of recognitions, imageHeight and width to the variables defined here as callback
+  Fungsi set recognition menetapkan nilai recognition, imageHeight, dan width ke variabel yang didefinisikan di sini sebagai callback
   */
   setRecognitions(recognitions, imageHeight, imageWidth) {
     setState(() {
@@ -37,7 +35,7 @@ class _LiveFeedState extends State<LiveFeed> {
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     loadTfModel();
   }
@@ -47,7 +45,7 @@ class _LiveFeedState extends State<LiveFeed> {
     Size screen = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Real Time Object Detection"),
+        title: Text("Deteksi Jenis Beras"),
       ),
       body: Stack(
         children: <Widget>[

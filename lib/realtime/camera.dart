@@ -8,8 +8,7 @@ typedef void Callback(List<dynamic> list, int h, int w);
 class CameraFeed extends StatefulWidget {
   final List<CameraDescription> cameras;
   final Callback setRecognitions;
-  // The cameraFeed Class takes the cameras list and the setRecognitions
-  // function as argument
+
   CameraFeed(this.cameras, this.setRecognitions);
 
   @override
@@ -25,11 +24,11 @@ class _CameraFeedState extends State<CameraFeed> {
     super.initState();
     print(widget.cameras);
     if (widget.cameras == null || widget.cameras.length < 1) {
-      print('No Cameras Found.');
+      print('Tidak ada kamera terdeteksi');
     } else {
       controller = new CameraController(
         widget.cameras[0],
-        ResolutionPreset.high,
+        ResolutionPreset.ultraHigh,
       );
       controller.initialize().then((_) {
         if (!mounted) {
@@ -41,8 +40,10 @@ class _CameraFeedState extends State<CameraFeed> {
           if (!isDetecting) {
             isDetecting = true;
             Tflite.detectObjectOnFrame(
-              bytesList: img.planes.map((plane) {return plane.bytes;}).toList(),
-              model: "SSDMobileNet",
+              bytesList: img.planes.map((plane) {
+                return plane.bytes;
+              }).toList(),
+              model: "YOLO",
               imageHeight: img.height,
               imageWidth: img.width,
               imageMean: 127.5,
